@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Telegram.Bot.Examples.Polling": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}
