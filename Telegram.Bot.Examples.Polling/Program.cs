@@ -7,8 +7,14 @@ public static class Program
 {
     private static TelegramBotClient? Bot;
 
-    public static async Task Main()
+    public static async Task Main(string[] args)
     {
+        string botToken = Configuration.BotToken;
+        if (args.Length > 0)
+        {
+            botToken = args[0];
+        }
+
         Bot = new TelegramBotClient(Configuration.BotToken);
 
         User me = await Bot.GetMeAsync();
