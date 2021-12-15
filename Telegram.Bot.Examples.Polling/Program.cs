@@ -1,6 +1,8 @@
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 
+using Microsoft.Extensions.Configuration;
+
 namespace Telegram.Bot.Examples.Polling;
 
 public static class Program
@@ -9,13 +11,34 @@ public static class Program
 
     public static async Task Main(string[] args)
     {
+        #region Get bot token from 3 posible sources
+
+        // first, from configuration class
         string botToken = Configuration.BotToken;
-        if (args.Length > 0)
+
+        #region second, from appsettings.json
+        string settingsFileName = "appsettings.json";
+        var value = System.Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+        if(value?.ToString().ToLower() == "dev")
         {
-            botToken = args[0];
+            settingsFileName = "appsettings_dev.json";
         }
 
-        Bot = new TelegramBotClient(Configuration.BotToken);
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile(settingsFileName)
+            .Build();
+
+        botToken = config.GetSection("botToken").Value; 
+        #endregion
+
+        // third, from command line argument
+        if(args.Length > 0)
+        {
+            botToken = args[0];
+        } 
+        #endregion
+
+        Bot = new TelegramBotClient(botToken);
 
         User me = await Bot.GetMeAsync();
         Console.Title = me.Username ?? "My awesome Bot";

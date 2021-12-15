@@ -2,7 +2,16 @@
   "profiles": {
     "Telegram.Bot.Examples.Polling": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "PUT-BOT-TOKEN-HERE",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "prod"
+      }
+    },
+    "dev": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "dev"
+      }
     }
   }
 }
